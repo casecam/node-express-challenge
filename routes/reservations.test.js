@@ -6,9 +6,13 @@ let app
 
 // morgan is an http request output with log messages. Let's silence it
 const mockMorgan = jest.fn((req, res, next) => next())
+const mockInsert = jest.fn().mockResolvedValue([1349])
 
 beforeAll(() => {
   jest.mock('morgan', () => () => mockMorgan)
+  jest.mock('../lib/knex', () => () => ({
+    insert: mockInsert,
+  }))
   app = request(require('../app'))
 })
 
@@ -30,7 +34,7 @@ describe('POST', () => {
   it('should reject an invalid reservation request', async () => {
     const res = await app.post('/reservations')
       .type('form')
-      signedCookie({
+      .send({
         date: '2017, 04, 10',
         time: '06:02 AM',
         party: 'bananas',
@@ -40,5 +44,16 @@ describe('POST', () => {
 
       expect(res.text).toContain('Sorry, there was a problem with your booking request')
       expect(res.status).toBe(400)
+  })
+
+  it.skip('should accept a valid reservation request', async () => {
+    const res = await app.post('/reservations')
+    .send({
+      date: '2017, 04, 10',
+      time: '06:02 AM',
+      party: 'bananas',
+      name: 'Family',
+      email: 'username@example.com'
+    })
   })
 })
