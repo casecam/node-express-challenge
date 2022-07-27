@@ -1,31 +1,14 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
 
-let index = require('./routes/index');
-let admin = require('./routes/admin');
-let reservations = require('./routes/reservations');
+const routes = require('./routes')
 
 const auth = require('./lib/middleware/auth.js');
 
-const configuration = {}
-
-
-
-
-
-
-
-
-
-
-if (1) {
-
-}
-
-var app = express();
+const app = express();
 
 // Static assets.
 // Move this after the logger if you want to log requests for static assets.
@@ -42,23 +25,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/', index);
 
 // Impenetrable security.
 app.use('/admin', auth('admin', 'admin'))
-app.use('/admin', admin);
-
-app.use('/reservations', reservations);
-
+app.use(routes)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res, next) { // eslint-disable-line no-unused-vars
   // set locals, only providing error in test
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'test' ? err : {};
