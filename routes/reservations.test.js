@@ -1,5 +1,3 @@
-const { signedCookie } = require('cookie-parser');
-const { invalid } = require('joi');
 const request = require('supertest')
 
 let app
@@ -52,7 +50,7 @@ describe('POST', () => {
     .send({
       date: '2017, 04, 10',
       time: '06:02 AM',
-      party: '4',
+      party: '8',
       name: 'Family',
       email: 'username@example.com'
     })
