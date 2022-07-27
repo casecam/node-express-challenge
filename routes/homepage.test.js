@@ -4,11 +4,13 @@ let app;
 const mockMorgan = jest.fn((req, res, next) => next());
 
 beforeAll(() => {
+  jest.mock('./', () => require('./homepage'))
   jest.mock('morgan', () => () => mockMorgan);
   app = request(require('../app'));
 });
 
 afterAll(() => {
+  jest.unmock('./')
   jest.unmock('morgan');
 });
 
