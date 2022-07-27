@@ -56,7 +56,7 @@ describe('POST', () => {
       name: 'Family',
       email: 'username@example.com'
     })
-    .expect(400)
+    .expect(200)
 
     expect(res.text).toContain('Thanks, your booking request #1349')
   })
