@@ -38,7 +38,7 @@ describe('POST', () => {
         email: 'username@example.com'
       })
 
-      expect(res.text).toContain('sorry, there was a problem with your booking request')
+      expect(res.text).toContain('Sorry, there was a problem with your booking request')
       expect(res.status).toBe(400)
   })
 })
