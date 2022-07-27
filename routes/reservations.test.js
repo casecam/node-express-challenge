@@ -46,14 +46,18 @@ describe('POST', () => {
       expect(res.status).toBe(400)
   })
 
-  it.skip('should accept a valid reservation request', async () => {
+  it('should accept a valid reservation request', async () => {
     const res = await app.post('/reservations')
+    .type('form')
     .send({
       date: '2017, 04, 10',
       time: '06:02 AM',
-      party: 'bananas',
+      party: '4',
       name: 'Family',
       email: 'username@example.com'
     })
+    .expect(400)
+
+    expect(res.text).toContain('Thanks, your booking request #1349')
   })
 })
